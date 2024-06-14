@@ -8,7 +8,7 @@ import (
 
 type RecipeRepository interface {
 	FindAll(filters dto.RecipeFilters) ([]models.Recipe, error)
-	FindByID(id uint) (models.Recipe, error)
+	FindById(id uint) (models.Recipe, error)
 	Create(recipe models.Recipe) (uint, error)
 }
 
@@ -39,7 +39,7 @@ func (r *recipeRepository) FindAll(filters dto.RecipeFilters) ([]models.Recipe, 
 	return recipes, nil
 }
 
-func (r *recipeRepository) FindByID(id uint) (models.Recipe, error) {
+func (r *recipeRepository) FindById(id uint) (models.Recipe, error) {
 	var recipe models.Recipe
 	if err := r.DB.First(&recipe, id).Error; err != nil {
 		return models.Recipe{}, err
