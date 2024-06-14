@@ -4,7 +4,6 @@ import (
 	"log"
 
 	"github.com/claytoncasey01/open-recipe-gin/config"
-	"github.com/claytoncasey01/open-recipe-gin/database"
 	"github.com/gin-gonic/gin"
 )
 
