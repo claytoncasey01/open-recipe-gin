@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func ConnectDB() {
+func ConnectDB() *gorm.DB {
 	dsn := os.Getenv("DSN")
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -19,4 +19,6 @@ func ConnectDB() {
 	// Make sure we run the AutoMigrate on connect to sync any
 	// model changes to the DB.
 	db.AutoMigrate(&models.Recipe{}, &models.Ingredient{}, &models.Direction{})
+
+	return db
 }
