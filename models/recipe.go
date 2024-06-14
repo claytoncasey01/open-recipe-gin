@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type Recipe struct {
 	gorm.Model
-	Name          string
+	Name          string `gorm:"not null;default:null"`
 	Description   *string
 	Difficulty    *string // Enum probably? TODO: Look back into this
 	TotalCalories *uint
@@ -15,7 +15,7 @@ type Recipe struct {
 
 type Ingredient struct {
 	gorm.Model
-	Name            string
+	Name            string `gorm:"not null;default:null"`
 	Quantity        string
 	MeasurementUnit *string
 	Calories        *uint
@@ -24,8 +24,8 @@ type Ingredient struct {
 
 type Direction struct {
 	gorm.Model
-	description string
-	time        *uint
-	order       uint
+	Description string
+	Time        *uint
+	Order       uint `gorm:"not null;default:null"`
 	RecipeID    uint
 }

@@ -25,7 +25,7 @@ func (r *recipeRepository) FindAll(filters dto.RecipeFilters) ([]models.Recipe, 
 	query := r.DB
 
 	if filters.Name != "" {
-		query = query.Where("name LIKE ?", "%"+filters.Name+"%")
+		query = query.Where("LOWER(name) LIKE LOWER(?)", "%"+filters.Name+"%")
 	}
 	if filters.Difficulty != "" {
 		query = query.Where("difficulty = ?", filters.Difficulty)
