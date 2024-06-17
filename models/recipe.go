@@ -6,7 +6,7 @@ type Recipe struct {
 	gorm.Model
 	Name          string `gorm:"not null;default:null"`
 	Description   *string
-	Difficulty    *uint
+	Difficulty    *uint `gorm:"check:difficulty >= 1 AND difficulty <= 10"`
 	TotalCalories *uint
 	TotalPrepTime *uint
 	Ingredients   []Ingredient
