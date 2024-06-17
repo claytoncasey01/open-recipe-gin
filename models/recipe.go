@@ -8,7 +8,7 @@ type Recipe struct {
 	Description   *string
 	Difficulty    *uint `gorm:"check:difficulty >= 1 AND difficulty <= 10"`
 	TotalCalories *uint
-	TotalPrepTime *uint
+	TotalPrepTime *string
 	Ingredients   []Ingredient
 	Directions    []Direction
 }
