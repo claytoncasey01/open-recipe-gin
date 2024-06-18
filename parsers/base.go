@@ -1,18 +1,17 @@
 package parsers
 
 import (
-	"mime/multipart"
 	"strconv"
 	"strings"
 )
 
 // Base generic parser interface
 type Parser interface {
-	Parse(file multipart.File) (any, error)
+	Parse(content string) (any, error)
 }
 
-func ParseFile(parser Parser, file multipart.File) {
-	parser.Parse(file)
+func ParseFile(parser Parser, content string) {
+	parser.Parse(content)
 }
 
 // Helpers
