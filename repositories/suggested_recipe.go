@@ -20,7 +20,7 @@ func NewSuggestedRecipeRepository(DB *gorm.DB) SuggestedRecipeRepository {
 
 func (r *suggestedRecipeRepository) FindById(id uint) (*models.SuggestedRecipe, error) {
 	var suggestedRecipe models.SuggestedRecipe
-	if err := r.DB.First(&suggestedRecipe, id).Error; err != nil {
+	if err := r.DB.Preload("Ingredients").Preload("Directions").First(&suggestedRecipe, id).Error; err != nil {
 		return nil, err
 	}
 	return &suggestedRecipe, nil
