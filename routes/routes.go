@@ -13,10 +13,20 @@ func RegisterRoutes(router *gin.Engine, db *gorm.DB) {
 	recipeService := services.NewRecipeService(recipeRepository)
 	recipeController := controllers.NewRecipeController(recipeService)
 
+	suggestedRecipeRepository := repositories.NewSuggestedRecipeRepository(db)
+	suggestedRecipeService := services.NewSuggestedRecipeService(suggestedRecipeRepository, recipeRepository)
+	suggestedRecipeController := controllers.NewSuggestedRecipeController(suggestedRecipeService)
+
 	api := router.Group("/api/v1")
 	{
+		// Recipe Routes
 		api.GET("/recipes", recipeController.GetAllRecipes)
 		api.GET("/recipes/:id", recipeController.GetRecipeById)
 		api.POST("/recipes", recipeController.CreateRecipe)
+
+		// Suggested Recipe Routes
+		api.GET("/suggested-recipies/:id", suggestedRecipeController.GetSuggestedRecipeById)
+		api.POST("/suggested-recipies/upload", suggestedRecipeController.CreateSuggestedRecipe)
+		api.POST("/suggested-recipies/accept", suggestedRecipeController.AcceptSuggestedRecipe)
 	}
 }

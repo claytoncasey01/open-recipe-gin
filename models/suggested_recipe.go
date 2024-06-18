@@ -11,6 +11,7 @@ type SuggestedRecipe struct {
 	TotalPrepTime *string
 	Ingredients   []SuggestedIngredient
 	Directions    []SuggestedDirection
+	accepted      bool
 }
 
 type SuggestedIngredient struct {

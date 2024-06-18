@@ -19,6 +19,12 @@ func NewSuggestedRecipeService(repo repositories.SuggestedRecipeRepository, reci
 	return &suggestedRecipeService{repo, recipeRepo}
 }
 
+func (s *suggestedRecipeService) CreateSuggestedRecipe(recipe dto.SuggestedRecipeDTO) (uint, error) {
+	suggestedRecipeModel := dto.SuggestedRecipeModelFromDTO(recipe)
+
+	return s.repo.Create(suggestedRecipeModel)
+}
+
 func (s *suggestedRecipeService) GetSuggestedRecipeById(id uint) (*dto.SuggestedRecipeDTO, error) {
 	suggestedRecipeModel, err := s.repo.FindById(id)
 	if err != nil {
@@ -29,6 +35,7 @@ func (s *suggestedRecipeService) GetSuggestedRecipeById(id uint) (*dto.Suggested
 	return &suggestedRecipeDTO, nil
 }
 
+// Creates a Recipe from a SuggestedRecipe
 func (s *suggestedRecipeService) AcceptSuggestedRecipe(recipe dto.SuggestedRecipeDTO) (uint, error) {
 	recipeModel := dto.RecipeModelFromSuggestedRecipeDTO(recipe)
 
