@@ -18,7 +18,7 @@ func ConnectDB() *gorm.DB {
 
 	// Make sure we run the AutoMigrate on connect to sync any
 	// model changes to the DB.
-	db.AutoMigrate(&models.Recipe{}, &models.Ingredient{}, &models.Direction{})
+	db.AutoMigrate(&models.Recipe{}, &models.Ingredient{}, &models.Direction{}, &models.SuggestedRecipe{}, &models.SuggestedIngredient{}, &models.SuggestedDirection{})
 
 	return db
 }
