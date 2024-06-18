@@ -6,6 +6,7 @@ import (
 )
 
 type SuggestedRecipeService interface {
+	CreateSuggestedRecipe(recipe dto.SuggestedRecipeDTO) (uint, error)
 	GetSuggestedRecipeById(id uint) (*dto.SuggestedRecipeDTO, error)
 	AcceptSuggestedRecipe(suggestedRecipe dto.SuggestedRecipeDTO) (uint, error)
 }
@@ -31,7 +32,7 @@ func (s *suggestedRecipeService) GetSuggestedRecipeById(id uint) (*dto.Suggested
 		return nil, err
 	}
 
-	suggestedRecipeDTO := dto.SuggestedRecipeDTOFromModel(suggestedRecipeModel)
+	suggestedRecipeDTO := dto.SuggestedRecipeDTOFromModel(*suggestedRecipeModel)
 	return &suggestedRecipeDTO, nil
 }
 

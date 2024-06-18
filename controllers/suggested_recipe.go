@@ -25,7 +25,7 @@ func NewSuggestedRecipeController(service services.SuggestedRecipeService) *Sugg
 
 // TODO: Implement upload
 func (c *SuggestedRecipeController) CreateSuggestedRecipe(ctx *gin.Context) {
-	file, err := ctx.FormFile("suggestedRecipe")
+	file, err := ctx.FormFile("file")
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, dto.NewResponse[dto.SuggestedRecipeDTO](nil, err.Error()))
 		return
@@ -47,13 +47,13 @@ func (c *SuggestedRecipeController) CreateSuggestedRecipe(ctx *gin.Context) {
 			return
 		}
 
-		recipeId, err := c.service.AcceptSuggestedRecipe(*suggestedRecipe)
+		suggestedRecipeID, err := c.service.CreateSuggestedRecipe(*suggestedRecipe)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, dto.NewResponse[dto.SuggestedRecipeDTO](nil, err.Error()))
 			return
 		}
 
-		ctx.JSON(http.StatusCreated, dto.NewResponse(&recipeId, ""))
+		ctx.JSON(http.StatusCreated, dto.NewResponse(&suggestedRecipeID, ""))
 	}
 }
 
@@ -66,7 +66,7 @@ func (c *SuggestedRecipeController) GetSuggestedRecipeById(ctx *gin.Context) {
 
 	recipe, err := c.service.GetSuggestedRecipeById(uint(id))
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, dto.NewResponse[[]models.SuggestedRecipe](nil, err.Error()))
+		ctx.JSON(http.StatusNotFound, dto.NewResponse[[]dto.SuggestedRecipeDTO](nil, err.Error()))
 		return
 	}
 
