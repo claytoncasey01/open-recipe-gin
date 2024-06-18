@@ -13,30 +13,32 @@ func TestSuggestedRecipeDTOFromModel(t *testing.T) {
 	totalCalories := uint(500)
 	totalPrepTime := "30m"
 	model := models.SuggestedRecipe{
+		ID:            1,
 		Name:          "Test Recipe",
 		Description:   &description,
 		Difficulty:    &difficulty,
 		TotalCalories: &totalCalories,
 		TotalPrepTime: &totalPrepTime,
 		Ingredients: []models.SuggestedIngredient{
-			{Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
+			{ID: 1, Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
 		},
 		Directions: []models.SuggestedDirection{
-			{Description: "Mix ingredients", Time: nil, Order: 1},
+			{ID: 1, Description: "Mix ingredients", Time: nil, Order: 1},
 		},
 	}
 
 	expected := SuggestedRecipeDTO{
+		ID:            1,
 		Name:          "Test Recipe",
 		Description:   &description,
 		Difficulty:    &difficulty,
 		TotalCalories: &totalCalories,
 		TotalPrepTime: &totalPrepTime,
 		Ingredients: []SuggestedIngredientDTO{
-			{Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
+			{ID: 1, Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
 		},
 		Directions: []SuggestedDirectionDTO{
-			{Description: "Mix ingredients", Time: nil, Order: 1},
+			{ID: 1, Description: "Mix ingredients", Time: nil, Order: 1},
 		},
 	}
 
@@ -51,34 +53,76 @@ func TestSuggestedRecipeModelFromDTO(t *testing.T) {
 	totalCalories := uint(500)
 	totalPrepTime := "30m"
 	dto := SuggestedRecipeDTO{
+		ID:            2,
 		Name:          "Test Recipe",
 		Description:   &description,
 		Difficulty:    &difficulty,
 		TotalCalories: &totalCalories,
 		TotalPrepTime: &totalPrepTime,
 		Ingredients: []SuggestedIngredientDTO{
-			{Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
+			{ID: 2, Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
 		},
 		Directions: []SuggestedDirectionDTO{
-			{Description: "Mix ingredients", Time: nil, Order: 1},
+			{ID: 2, Description: "Mix ingredients", Time: nil, Order: 1},
 		},
 	}
 
 	expected := models.SuggestedRecipe{
+		ID:            2,
 		Name:          "Test Recipe",
 		Description:   &description,
 		Difficulty:    &difficulty,
 		TotalCalories: &totalCalories,
 		TotalPrepTime: &totalPrepTime,
 		Ingredients: []models.SuggestedIngredient{
-			{Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
+			{ID: 2, Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
 		},
 		Directions: []models.SuggestedDirection{
-			{Description: "Mix ingredients", Time: nil, Order: 1},
+			{ID: 2, Description: "Mix ingredients", Time: nil, Order: 1},
 		},
 	}
 
 	result := SuggestedRecipeModelFromDTO(dto)
 
 	assert.Equal(t, expected, result, "SuggestedRecipeModelFromDTO() should convert DTO to model correctly")
+}
+
+func TestRecipeModelFromSuggestedRecipeDTO(t *testing.T) {
+	description := "Delicious recipe"
+	difficulty := uint(2)
+	totalCalories := uint(500)
+	totalPrepTime := "30m"
+	dto := SuggestedRecipeDTO{
+		ID:            3,
+		Name:          "Test Recipe",
+		Description:   &description,
+		Difficulty:    &difficulty,
+		TotalCalories: &totalCalories,
+		TotalPrepTime: &totalPrepTime,
+		Ingredients: []SuggestedIngredientDTO{
+			{ID: 3, Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
+		},
+		Directions: []SuggestedDirectionDTO{
+			{ID: 3, Description: "Mix ingredients", Time: nil, Order: 1},
+		},
+	}
+
+	expected := models.Recipe{
+		ID:            3,
+		Name:          "Test Recipe",
+		Description:   &description,
+		Difficulty:    &difficulty,
+		TotalCalories: &totalCalories,
+		TotalPrepTime: &totalPrepTime,
+		Ingredients: []models.Ingredient{
+			{ID: 3, Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
+		},
+		Directions: []models.Direction{
+			{ID: 3, Description: "Mix ingredients", Time: nil, Order: 1},
+		},
+	}
+
+	result := RecipeModelFromSuggestedRecipeDTO(dto)
+
+	assert.Equal(t, expected, result, "RecipeModelFromSuggestedRecipeDTO() should convert DTO to model correctly")
 }

@@ -28,7 +28,7 @@ var commonQuantities = []string{
 // Name,Description,TotalPrepTime,TotalCalories,Difficulty, INGREDIENTS, DIRECTIONS
 // The first row contains the recipe details
 // The rest of the rows contain data for the ingredients and directions
-func (p CsvParser) Parse(content string) (any, error) {
+func (p CsvParser) Parse(content string) (*dto.SuggestedRecipeDTO, error) {
 	csvReader := csv.NewReader(strings.NewReader(content))
 	records, err := csvReader.ReadAll()
 	if err != nil {
@@ -40,7 +40,7 @@ func (p CsvParser) Parse(content string) (any, error) {
 	}
 
 	// Parse the recipe details from the second row (first is headers)
-	recipe := dto.RecipeDTO{
+	suggestedRecipe := dto.SuggestedRecipeDTO{
 		Name:          records[1][0],
 		TotalPrepTime: &records[1][2],
 		TotalCalories: ParseUint(records[1][3]),
@@ -48,8 +48,8 @@ func (p CsvParser) Parse(content string) (any, error) {
 	}
 
 	// Parse ingredients and directions from the rest of the rows
-	var ingredients []dto.IngredientDTO
-	var directions []dto.DirectionDTO
+	var ingredients []dto.SuggestedIngredientDTO
+	var directions []dto.SuggestedDirectionDTO
 
 	for _, record := range records[2:] {
 		// Skip the rows that are completely empty
@@ -60,7 +60,7 @@ func (p CsvParser) Parse(content string) (any, error) {
 		// Ingredient Rows
 		if strings.TrimSpace(record[5]) != "" {
 			quantity, unit := ParseQuantity(record[5])
-			ingredients = append(ingredients, dto.IngredientDTO{
+			ingredients = append(ingredients, dto.SuggestedIngredientDTO{
 				Name:            ParseName(record[5], quantity, unit),
 				Quantity:        quantity,
 				MeasurementUnit: unit,
@@ -84,15 +84,15 @@ func (p CsvParser) Parse(content string) (any, error) {
 			description = strings.TrimPrefix(description, strconv.Itoa(order))
 			// Remove any leftover leading/trailing whitespace and extra spaces after removing the order
 			description = strings.TrimSpace(description)
-			directions = append(directions, dto.DirectionDTO{
+			directions = append(directions, dto.SuggestedDirectionDTO{
 				Order:       uint(order),
 				Description: description,
 			})
 		}
 	}
 
-	recipe.Ingredients = ingredients
-	recipe.Directions = directions
+	suggestedRecipe.Ingredients = ingredients
+	suggestedRecipe.Directions = directions
 
-	return &recipe, nil
+	return &suggestedRecipe, nil
 }

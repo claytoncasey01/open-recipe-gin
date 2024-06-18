@@ -13,30 +13,32 @@ func TestRecipeDTOFromModel(t *testing.T) {
 	totalCalories := uint(500)
 	totalPrepTime := "30m"
 	model := models.Recipe{
+		ID:            1,
 		Name:          "Test Recipe",
 		Description:   &description,
 		Difficulty:    &difficulty,
 		TotalCalories: &totalCalories,
 		TotalPrepTime: &totalPrepTime,
 		Ingredients: []models.Ingredient{
-			{Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
+			{ID: 1, Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
 		},
 		Directions: []models.Direction{
-			{Description: "Mix ingredients", Time: nil, Order: 1},
+			{ID: 1, Description: "Mix ingredients", Time: nil, Order: 1},
 		},
 	}
 
 	expected := RecipeDTO{
+		ID:            1,
 		Name:          "Test Recipe",
 		Description:   &description,
 		Difficulty:    &difficulty,
 		TotalCalories: &totalCalories,
 		TotalPrepTime: &totalPrepTime,
 		Ingredients: []IngredientDTO{
-			{Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
+			{ID: 1, Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
 		},
 		Directions: []DirectionDTO{
-			{Description: "Mix ingredients", Time: nil, Order: 1},
+			{ID: 1, Description: "Mix ingredients", Time: nil, Order: 1},
 		},
 	}
 
@@ -51,30 +53,32 @@ func TestRecipeModelFromDTO(t *testing.T) {
 	totalCalories := uint(500)
 	totalPrepTime := "30m"
 	dto := RecipeDTO{
+		ID:            2,
 		Name:          "Test Recipe",
 		Description:   &description,
 		Difficulty:    &difficulty,
 		TotalCalories: &totalCalories,
 		TotalPrepTime: &totalPrepTime,
 		Ingredients: []IngredientDTO{
-			{Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
+			{ID: 2, Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
 		},
 		Directions: []DirectionDTO{
-			{Description: "Mix ingredients", Time: nil, Order: 1},
+			{ID: 2, Description: "Mix ingredients", Time: nil, Order: 1},
 		},
 	}
 
 	expected := models.Recipe{
+		ID:            2,
 		Name:          "Test Recipe",
 		Description:   &description,
 		Difficulty:    &difficulty,
 		TotalCalories: &totalCalories,
 		TotalPrepTime: &totalPrepTime,
 		Ingredients: []models.Ingredient{
-			{Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
+			{ID: 2, Name: "Salt", Quantity: "1 tsp", MeasurementUnit: nil},
 		},
 		Directions: []models.Direction{
-			{Description: "Mix ingredients", Time: nil, Order: 1},
+			{ID: 2, Description: "Mix ingredients", Time: nil, Order: 1},
 		},
 	}
 

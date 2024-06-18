@@ -8,7 +8,7 @@ import (
 
 type RecipeRepository interface {
 	FindAll(filters dto.RecipeFilters) ([]models.Recipe, error)
-	FindById(id uint) (models.Recipe, error)
+	FindById(id uint) (*models.Recipe, error)
 	Create(recipe models.Recipe) (uint, error)
 }
 
@@ -22,7 +22,7 @@ func NewRecipeRepository(DB *gorm.DB) RecipeRepository {
 
 func (r *recipeRepository) FindAll(filters dto.RecipeFilters) ([]models.Recipe, error) {
 	var recipes []models.Recipe
-	query := r.DB
+	query := r.DB.Preload("Ingredients").Preload("Directions")
 
 	if filters.Name != "" {
 		query = query.Where("LOWER(name) LIKE LOWER(?)", "%"+filters.Name+"%")
@@ -39,12 +39,12 @@ func (r *recipeRepository) FindAll(filters dto.RecipeFilters) ([]models.Recipe, 
 	return recipes, nil
 }
 
-func (r *recipeRepository) FindById(id uint) (models.Recipe, error) {
+func (r *recipeRepository) FindById(id uint) (*models.Recipe, error) {
 	var recipe models.Recipe
-	if err := r.DB.First(&recipe, id).Error; err != nil {
-		return models.Recipe{}, err
+	if err := r.DB.Preload("Ingredients").Preload("Directions").First(&recipe, id).Error; err != nil {
+		return nil, err
 	}
-	return recipe, nil
+	return &recipe, nil
 }
 
 func (r *recipeRepository) Create(recipe models.Recipe) (uint, error) {

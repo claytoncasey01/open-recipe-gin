@@ -9,6 +9,7 @@ type RecipeFilters struct {
 }
 
 type RecipeDTO struct {
+	ID            uint            `json:"id"`
 	Name          string          `json:"name"`
 	Description   *string         `json:"description"`
 	Difficulty    *uint           `json:"difficulty"`
@@ -19,12 +20,14 @@ type RecipeDTO struct {
 }
 
 type IngredientDTO struct {
+	ID              uint    `json:"id"`
 	Name            string  `json:"name"`
 	Quantity        string  `json:"quantity"`
 	MeasurementUnit *string `json:"measurement_unit"`
 }
 
 type DirectionDTO struct {
+	ID          uint   `json:"id"`
 	Description string `json:"description"`
 	Time        *uint  `json:"time"`
 	Order       uint   `json:"order"`
@@ -32,6 +35,7 @@ type DirectionDTO struct {
 
 func RecipeDTOFromModel(model models.Recipe) RecipeDTO {
 	recipeDTO := RecipeDTO{
+		ID:            model.ID,
 		Name:          model.Name,
 		Description:   model.Description,
 		Difficulty:    model.Difficulty,
@@ -41,6 +45,7 @@ func RecipeDTOFromModel(model models.Recipe) RecipeDTO {
 
 	for _, ingredient := range model.Ingredients {
 		recipeDTO.Ingredients = append(recipeDTO.Ingredients, IngredientDTO{
+			ID:              ingredient.ID,
 			Name:            ingredient.Name,
 			Quantity:        ingredient.Quantity,
 			MeasurementUnit: ingredient.MeasurementUnit,
@@ -49,6 +54,7 @@ func RecipeDTOFromModel(model models.Recipe) RecipeDTO {
 
 	for _, direction := range model.Directions {
 		recipeDTO.Directions = append(recipeDTO.Directions, DirectionDTO{
+			ID:          direction.ID,
 			Description: direction.Description,
 			Time:        direction.Time,
 			Order:       direction.Order,
@@ -60,6 +66,7 @@ func RecipeDTOFromModel(model models.Recipe) RecipeDTO {
 
 func RecipeModelFromDTO(dto RecipeDTO) models.Recipe {
 	recipeModel := models.Recipe{
+		ID:            dto.ID,
 		Name:          dto.Name,
 		Description:   dto.Description,
 		Difficulty:    dto.Difficulty,
@@ -69,6 +76,7 @@ func RecipeModelFromDTO(dto RecipeDTO) models.Recipe {
 
 	for _, ingredient := range dto.Ingredients {
 		recipeModel.Ingredients = append(recipeModel.Ingredients, models.Ingredient{
+			ID:              ingredient.ID,
 			Name:            ingredient.Name,
 			Quantity:        ingredient.Quantity,
 			MeasurementUnit: ingredient.MeasurementUnit,
@@ -77,6 +85,7 @@ func RecipeModelFromDTO(dto RecipeDTO) models.Recipe {
 
 	for _, direction := range dto.Directions {
 		recipeModel.Directions = append(recipeModel.Directions, models.Direction{
+			ID:          direction.ID,
 			Description: direction.Description,
 			Time:        direction.Time,
 			Order:       direction.Order,
