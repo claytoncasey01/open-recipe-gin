@@ -1,6 +1,10 @@
 package dto
 
-import "github.com/claytoncasey01/open-recipe-gin/models"
+import (
+	"encoding/json"
+
+	"github.com/claytoncasey01/open-recipe-gin/models"
+)
 
 type SuggestedRecipeDTO struct {
 	ID            uint                     `json:"id"`
@@ -115,4 +119,14 @@ func RecipeModelFromSuggestedRecipeDTO(dto SuggestedRecipeDTO) models.Recipe {
 	}
 
 	return recipeModel
+}
+
+func DerserializeSuggestedRecipeDTO(suggestedRecipeJson string) (*SuggestedRecipeDTO, error) {
+	var dto SuggestedRecipeDTO
+	err := json.Unmarshal([]byte(suggestedRecipeJson), &dto)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto, nil
 }
