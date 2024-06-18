@@ -2,18 +2,18 @@ package models
 
 import "gorm.io/gorm"
 
-type Recipe struct {
+type SuggestedRecipe struct {
 	gorm.Model
 	Name          string `gorm:"not null;default:null"`
 	Description   *string
 	Difficulty    *uint `gorm:"check:difficulty >= 1 AND difficulty <= 10"`
 	TotalCalories *uint
 	TotalPrepTime *string
-	Ingredients   []Ingredient
-	Directions    []Direction
+	Ingredients   []SuggestedIngredient
+	Directions    []SuggestedDirection
 }
 
-type Ingredient struct {
+type SuggestedIngredient struct {
 	gorm.Model
 	Name            string `gorm:"not null;default:null"`
 	Quantity        string
@@ -21,7 +21,7 @@ type Ingredient struct {
 	RecipeID        uint
 }
 
-type Direction struct {
+type SuggestedDirection struct {
 	gorm.Model
 	Description string
 	Time        *uint

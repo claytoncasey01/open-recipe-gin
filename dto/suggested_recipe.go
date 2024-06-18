@@ -2,36 +2,30 @@ package dto
 
 import "github.com/claytoncasey01/open-recipe-gin/models"
 
-type RecipeFilters struct {
-	Name       string `form:"name"`
-	Difficulty string `form:"difficulty"`
-	PrepTime   uint   `form:"prepTime"`
+type SuggestedRecipeDTO struct {
+	Name          string                   `json:"name"`
+	Description   *string                  `json:"description"`
+	Difficulty    *uint                    `json:"difficulty"`
+	TotalCalories *uint                    `json:"total_calories"`
+	TotalPrepTime *string                  `json:"total_prep_time"`
+	Ingredients   []SuggestedIngredientDTO `json:"ingredients"`
+	Directions    []SuggestedDirectionDTO  `json:"directions"`
 }
 
-type RecipeDTO struct {
-	Name          string          `json:"name"`
-	Description   *string         `json:"description"`
-	Difficulty    *uint           `json:"difficulty"`
-	TotalCalories *uint           `json:"total_calories"`
-	TotalPrepTime *string         `json:"total_prep_time"`
-	Ingredients   []IngredientDTO `json:"ingredients"`
-	Directions    []DirectionDTO  `json:"directions"`
-}
-
-type IngredientDTO struct {
+type SuggestedIngredientDTO struct {
 	Name            string  `json:"name"`
 	Quantity        string  `json:"quantity"`
 	MeasurementUnit *string `json:"measurement_unit"`
 }
 
-type DirectionDTO struct {
+type SuggestedDirectionDTO struct {
 	Description string `json:"description"`
 	Time        *uint  `json:"time"`
 	Order       uint   `json:"order"`
 }
 
-func RecipeDTOFromModel(model models.Recipe) RecipeDTO {
-	recipeDTO := RecipeDTO{
+func SuggestedRecipeDTOFromModel(model models.SuggestedRecipe) SuggestedRecipeDTO {
+	suggestedRecipeDTO := SuggestedRecipeDTO{
 		Name:          model.Name,
 		Description:   model.Description,
 		Difficulty:    model.Difficulty,
@@ -40,7 +34,7 @@ func RecipeDTOFromModel(model models.Recipe) RecipeDTO {
 	}
 
 	for _, ingredient := range model.Ingredients {
-		recipeDTO.Ingredients = append(recipeDTO.Ingredients, IngredientDTO{
+		suggestedRecipeDTO.Ingredients = append(suggestedRecipeDTO.Ingredients, SuggestedIngredientDTO{
 			Name:            ingredient.Name,
 			Quantity:        ingredient.Quantity,
 			MeasurementUnit: ingredient.MeasurementUnit,
@@ -48,18 +42,18 @@ func RecipeDTOFromModel(model models.Recipe) RecipeDTO {
 	}
 
 	for _, direction := range model.Directions {
-		recipeDTO.Directions = append(recipeDTO.Directions, DirectionDTO{
+		suggestedRecipeDTO.Directions = append(suggestedRecipeDTO.Directions, SuggestedDirectionDTO{
 			Description: direction.Description,
 			Time:        direction.Time,
 			Order:       direction.Order,
 		})
 	}
 
-	return recipeDTO
+	return suggestedRecipeDTO
 }
 
-func RecipeModelFromDTO(dto RecipeDTO) models.Recipe {
-	recipeModel := models.Recipe{
+func SuggestedRecipeModelFromDTO(dto SuggestedRecipeDTO) models.SuggestedRecipe {
+	suggestedRecipeModel := models.SuggestedRecipe{
 		Name:          dto.Name,
 		Description:   dto.Description,
 		Difficulty:    dto.Difficulty,
@@ -68,7 +62,7 @@ func RecipeModelFromDTO(dto RecipeDTO) models.Recipe {
 	}
 
 	for _, ingredient := range dto.Ingredients {
-		recipeModel.Ingredients = append(recipeModel.Ingredients, models.Ingredient{
+		suggestedRecipeModel.Ingredients = append(suggestedRecipeModel.Ingredients, models.SuggestedIngredient{
 			Name:            ingredient.Name,
 			Quantity:        ingredient.Quantity,
 			MeasurementUnit: ingredient.MeasurementUnit,
@@ -76,12 +70,12 @@ func RecipeModelFromDTO(dto RecipeDTO) models.Recipe {
 	}
 
 	for _, direction := range dto.Directions {
-		recipeModel.Directions = append(recipeModel.Directions, models.Direction{
+		suggestedRecipeModel.Directions = append(suggestedRecipeModel.Directions, models.SuggestedDirection{
 			Description: direction.Description,
 			Time:        direction.Time,
 			Order:       direction.Order,
 		})
 	}
 
-	return recipeModel
+	return suggestedRecipeModel
 }
