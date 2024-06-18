@@ -13,7 +13,7 @@ func TestParse_ValidCSV(t *testing.T) {
 	tests := []struct {
 		name     string
 		content  string
-		expected *dto.RecipeDTO
+		expected *dto.SuggestedRecipeDTO
 		wantErr  bool
 	}{
 		{
@@ -24,18 +24,18 @@ LASAGNA,12,90 MINUTES,4530,6,,
 ,,,,,"2 cups Ingredient 2","2 			Bake for 20 mins"
 ,,,,,"1 lb Ingredient 3",
 `,
-			expected: &dto.RecipeDTO{
+			expected: &dto.SuggestedRecipeDTO{
 				Name:          "LASAGNA",
 				Description:   nil,
 				TotalPrepTime: stringPtr("90 MINUTES"),
 				TotalCalories: uintPtr(4530),
 				Difficulty:    uintPtr(6),
-				Ingredients: []dto.IngredientDTO{
+				Ingredients: []dto.SuggestedIngredientDTO{
 					{Name: "Ingredient 1", Quantity: "1", MeasurementUnit: stringPtr("teaspoon")},
 					{Name: "Ingredient 2", Quantity: "2", MeasurementUnit: stringPtr("cups")},
 					{Name: "Ingredient 3", Quantity: "1", MeasurementUnit: stringPtr("lb")},
 				},
-				Directions: []dto.DirectionDTO{
+				Directions: []dto.SuggestedDirectionDTO{
 					{Order: 1, Description: "Mix all ingredients"},
 					{Order: 2, Description: "Bake for 20 mins"},
 				},

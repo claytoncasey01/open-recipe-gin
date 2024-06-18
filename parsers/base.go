@@ -3,15 +3,17 @@ package parsers
 import (
 	"strconv"
 	"strings"
+
+	"github.com/claytoncasey01/open-recipe-gin/dto"
 )
 
 // Base generic parser interface
 type Parser interface {
-	Parse(content string) (any, error)
+	Parse(content string) (*dto.SuggestedRecipeDTO, error)
 }
 
-func ParseFile(parser Parser, content string) {
-	parser.Parse(content)
+func ParseFile(parser Parser, content string) (*dto.SuggestedRecipeDTO, error) {
+	return parser.Parse(content)
 }
 
 // Helpers
