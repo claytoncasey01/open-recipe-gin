@@ -71,8 +71,6 @@ func (p OpenAIParser) Parse(content string) (*dto.SuggestedRecipeDTO, error) {
 		return nil, fmt.Errorf("Failed to extract the JSON string from the response")
 	}
 
-	fmt.Println(jsonString)
-
 	// Convert the resp to a SuggestedRecipeDTO
 	suggestedRecipe, err := dto.DerserializeSuggestedRecipeDTO(jsonString)
 	if err != nil {
