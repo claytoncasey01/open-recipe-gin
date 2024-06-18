@@ -5,6 +5,7 @@ import (
 	"io"
 	"mime/multipart"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
@@ -13,6 +14,7 @@ import (
 	"github.com/claytoncasey01/open-recipe-gin/parsers"
 	"github.com/claytoncasey01/open-recipe-gin/services"
 	"github.com/gin-gonic/gin"
+	"github.com/sashabaranov/go-openai"
 )
 
 type SuggestedRecipeController struct {
@@ -37,24 +39,37 @@ func (c *SuggestedRecipeController) CreateSuggestedRecipe(ctx *gin.Context) {
 		return
 	}
 
-	if fileType == "txt" {
-	} else {
+	var suggestedRecipe *dto.SuggestedRecipeDTO
+
+	if fileType == "csv" {
 		// Parse the csv
 		parser := parsers.CsvParser{}
-		suggestedRecipe, err := parsers.ParseFile(parser, fileContent)
+		suggestedRecipe, err = parsers.ParseFile(parser, fileContent)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, dto.NewResponse[dto.SuggestedRecipeDTO](nil, err.Error()))
 			return
 		}
 
-		suggestedRecipeID, err := c.service.CreateSuggestedRecipe(*suggestedRecipe)
+	} else {
+		apiKey := os.Getenv("OPENAI_API_KEY")
+		parser := parsers.OpenAIParser{
+			Client: openai.NewClient(apiKey),
+		}
+		suggestedRecipe, err = parsers.ParseFile(parser, fileContent)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, dto.NewResponse[dto.SuggestedRecipeDTO](nil, err.Error()))
 			return
 		}
 
-		ctx.JSON(http.StatusCreated, dto.NewResponse(&suggestedRecipeID, ""))
 	}
+	// Create the recipe and get the id
+	suggestedRecipeID, err := c.service.CreateSuggestedRecipe(*suggestedRecipe)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, dto.NewResponse[dto.SuggestedRecipeDTO](nil, err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, dto.NewResponse(&suggestedRecipeID, ""))
 }
 
 func (c *SuggestedRecipeController) GetSuggestedRecipeById(ctx *gin.Context) {
