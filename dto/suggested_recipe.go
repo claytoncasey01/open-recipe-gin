@@ -79,3 +79,31 @@ func SuggestedRecipeModelFromDTO(dto SuggestedRecipeDTO) models.SuggestedRecipe 
 
 	return suggestedRecipeModel
 }
+
+func RecipeModelFromSuggestedRecipeDTO(dto SuggestedRecipeDTO) models.Recipe {
+	recipeModel := models.Recipe{
+		Name:          dto.Name,
+		Description:   dto.Description,
+		Difficulty:    dto.Difficulty,
+		TotalCalories: dto.TotalCalories,
+		TotalPrepTime: dto.TotalPrepTime,
+	}
+
+	for _, ingredient := range dto.Ingredients {
+		recipeModel.Ingredients = append(recipeModel.Ingredients, models.Ingredient{
+			Name:            ingredient.Name,
+			Quantity:        ingredient.Quantity,
+			MeasurementUnit: ingredient.MeasurementUnit,
+		})
+	}
+
+	for _, direction := range dto.Directions {
+		recipeModel.Directions = append(recipeModel.Directions, models.Direction{
+			Description: direction.Description,
+			Time:        direction.Time,
+			Order:       direction.Order,
+		})
+	}
+
+	return recipeModel
+}
