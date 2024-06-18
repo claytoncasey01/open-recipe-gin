@@ -52,9 +52,9 @@ func (c *RecipeController) GetRecipeById(ctx *gin.Context) {
 }
 
 func (c *RecipeController) CreateRecipe(ctx *gin.Context) {
-	var recipe models.Recipe
+	var recipe dto.RecipeDTO
 	if err := ctx.ShouldBindJSON(&recipe); err != nil {
-		ctx.JSON(http.StatusBadRequest, dto.NewResponse[models.Recipe](nil, err.Error()))
+		ctx.JSON(http.StatusBadRequest, dto.NewResponse[dto.RecipeDTO](nil, err.Error()))
 		return
 	}
 
